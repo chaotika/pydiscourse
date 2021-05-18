@@ -1077,6 +1077,57 @@ class DiscourseClient(object):
 
         return self._post("/admin/groups", json=True, **kwargs)
 
+    def update_group(
+        self,
+        name,
+        title="",
+        visible=True,
+        alias_level=0,
+        automatic_membership_retroactive=False,
+        primary_group=False,
+        automatic=False,
+        automatic_membership_email_domains="",
+        grant_trust_level=1,
+        flair_url=None,
+        flair_bg_color=None,
+        flair_color=None,
+        **kwargs
+    ):
+        """
+        Args:
+
+            name: name of the group
+            title: "" (title of the member of this group)
+            visible: true
+            alias_level: 0
+            automatic_membership_retroactive: false
+            primary_group: false
+            automatic: false
+            automatic_membership_email_domains: ""
+            grant_trust_level: 1
+            flair_url: Avatar Flair Image
+            flair_bg_color: Avatar Flair Background Color
+            flair_color: Avatar Flair Color
+
+        """
+        kwargs["title"] = title
+        kwargs["visible"] = visible
+        kwargs["alias_level"] = alias_level
+        kwargs["automatic_membership_retroactive"] = automatic_membership_retroactive
+        kwargs["primary_group"] = primary_group
+        kwargs["automatic"] = automatic
+        kwargs[
+            "automatic_membership_email_domains"
+        ] = automatic_membership_email_domains
+        kwargs["grant_trust_level"] = grant_trust_level
+        kwargs["flair_url"] = flair_url
+        kwargs["flair_bg_color"] = flair_bg_color
+        kwargs["flair_color"] = flair_color
+        # Discourse v.1.7.0
+        kwargs = {"group": kwargs}
+
+        return self._put("/admin/groups/{0}.json".format(name))
+
     def delete_group(self, groupid):
         """
         Deletes a group by its ID
